@@ -1,0 +1,736 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Little World</title>
+<style>
+:root {
+  --bg:#101014;
+  --panel:#1b1a20;
+  --gold:#d9b875;
+  --white:#f7f2e9;
+  --muted:#aaa3a0;
+  --red:#a84b51;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:Georgia,serif;
+}
+button,input,textarea {font:inherit}
+button {cursor:pointer}
+header {
+  text-align:center;
+  padding:35px 18px 20px;
+}
+.eyebrow {
+  color:var(--gold);
+  letter-spacing:4px;
+  font:11px Arial,sans-serif;
+  text-transform:uppercase;
+}
+h1 {
+  font-size:38px;
+  font-weight:normal;
+  margin:15px 0 8px;
+}
+.subtitle {color:var(--muted);font-style:italic}
+nav {
+  display:flex;
+  overflow-x:auto;
+  gap:9px;
+  padding:15px;
+  justify-content:center;
+  border-bottom:1px solid #343039;
+}
+nav button {
+  white-space:nowrap;
+  background:transparent;
+  color:var(--muted);
+  border:1px solid #49434a;
+  padding:10px 14px;
+  border-radius:30px;
+  font:12px Arial;
+}
+nav button.active {
+  color:var(--gold);
+  border-color:var(--gold);
+}
+main {max-width:850px;margin:auto;padding:25px 18px 65px}
+.page {display:none}
+.page.active {display:block}
+.hero {
+  text-align:center;
+  padding:40px 15px;
+  background:linear-gradient(160deg,#28232a,#17191e 65%,#25222a);
+  border:1px solid #514537;
+  border-radius:18px;
+}
+.hero h2 {font-size:30px;font-weight:normal;margin:12px}
+.hero p {color:var(--muted);line-height:1.7}
+.countdowns {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+  margin-top:20px;
+}
+.card {
+  background:var(--panel);
+  border:1px solid #38343a;
+  border-radius:15px;
+  padding:20px 13px;
+}
+.countdown {text-align:center}
+.countdown h3 {color:var(--gold);font-weight:normal}
+.time {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:18px;
+}
+.time div {
+  background:#111116;
+  padding:12px 4px;
+  border-radius:9px;
+  font:11px Arial;
+  color:var(--muted);
+}
+.time strong {
+  display:block;
+  color:var(--white);
+  font:24px Georgia;
+  margin-bottom:5px;
+}
+h2.section-title {font-weight:normal;font-size:27px}
+.intro {color:var(--muted);line-height:1.7}
+.panel {margin-top:20px}
+.item {
+  background:var(--panel);
+  border:1px solid #39343a;
+  padding:18px;
+  border-radius:13px;
+  margin:12px 0;
+}
+.item h3 {color:var(--gold);font-weight:normal}
+.small {font:12px Arial;color:var(--muted)}
+input,textarea {
+  width:100%;
+  padding:13px;
+  border-radius:9px;
+  border:1px solid #49434a;
+  background:#111116;
+  color:white;
+  margin:8px 0 12px;
+}
+textarea {min-height:100px;resize:vertical}
+.gold-button {
+  background:var(--gold);
+  color:#171318;
+  border:0;
+  padding:12px 19px;
+  border-radius:25px;
+  font:13px Arial;
+}
+.outline-button {
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  padding:10px 16px;
+  border-radius:25px;
+}
+.locked {text-align:center;padding:35px 15px}
+.lock-icon {font-size:42px}
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:25px;
+  font-size:13px;
+}
+@media(max-width:500px) {
+  header {padding-top:27px}
+  h1 {font-size:32px}
+  nav {justify-content:flex-start}
+  .countdowns {grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">A little place of our own</div>
+  <h1>Our Little World ✦</h1>
+  <div class="subtitle">Two dates, countless memories.</div>
+</header>
+
+<nav>
+  <button class="active" onclick="showPage('home',this)">Home</button>
+  <button onclick="showPage('gifts',this)">Gifts</button>
+  <button onclick="showPage('notes',this)">Daily Notes</button>
+  <button onclick="showPage('itinerary',this)">Itinerary 🔒</button>
+  <button onclick="showPage('settings',this)">Settings</button>
+</nav>
+
+<main>
+
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="eyebrow">A celebration of you</div>
+    <h2>For my favourite human.</h2>
+    <p>A little corner of the internet filled with surprises,<br>
+    memories, messages and things made with love.</p>
+    <div style="color:var(--gold);font-size:25px">☾ ✧ ♡ ✧ ☽</div>
+  </div>
+
+  <div class="countdowns">
+    <div class="card countdown">
+      <div class="eyebrow">The actual birthday</div>
+      <h3>7 December 2026</h3>
+      <div class="small">The day you came into this world.</div>
+      <div class="time" id="birthdayTimer"></div>
+    </div>
+    <div class="card countdown">
+      <div class="eyebrow">A little surprise</div>
+      <h3>8 December 2026</h3>
+      <div class="small">The day I've been waiting to celebrate.</div>
+      <div class="time" id="surpriseTimer"></div>
+    </div>
+  </div>
+
+  <div class="item panel" style="text-align:center">
+    <h3>Some things are worth waiting for.</h3>
+    <p class="intro">Until then, there's a little world here for us to explore.</p>
+  </div>
+</section>
+
+<section id="gifts" class="page">
+  <div class="eyebrow">A little collection</div>
+  <h2 class="section-title">Birthday Gifts 🎁</h2>
+  <p class="intro">A few things I've picked out for you. More surprises will find their way here.</p>
+  <div id="giftList"></div>
+  <div class="item">
+    <h3>Add a gift (preview)</h3>
+    <input id="giftName" placeholder="Gift name">
+    <input id="giftLink" placeholder="Link (optional)">
+    <textarea id="giftDescription" placeholder="A little description..."></textarea>
+    <button class="gold-button" onclick="addGift()">Add gift</button>
+  </div>
+</section>
+
+<section id="notes" class="page">
+  <div class="eyebrow">Little words, lasting memories</div>
+  <h2 class="section-title">Our Daily Notes 💌</h2>
+  <p class="intro">A place for the things we want to tell each other, today and every day.</p>
+  <div class="item">
+    <h3>Leave a little note</h3>
+    <input id="noteAuthor" placeholder="Your name">
+    <textarea id="noteText" placeholder="Write something for each other..."></textarea>
+    <button class="gold-button" onclick="addNote()">Save note</button>
+  </div>
+  <h3 style="color:var(--gold);font-weight:normal">Our little archive</h3>
+  <div id="noteList"></div>
+</section>
+
+<section id="itinerary" class="page">
+  <div class="eyebrow">Something is waiting</div>
+  <h2 class="section-title">The Celebration ✨</h2>
+  <div id="itineraryContent" class="item locked">
+    <div class="lock-icon">🔒</div>
+    <h3>Not just yet...</h3>
+    <p class="intro">This little surprise is still a secret.<br>
+    Come back when the time is right.</p>
+  </div>
+</section>
+
+<section id="settings" class="page">
+  <div class="eyebrow">Behind the scenes</div>
+  <h2 class="section-title">Website Settings ⚙</h2>
+  <div class="item">
+    <h3>Itinerary preview control</h3>
+    <p class="intro">This is only a local design preview. The real admin-only lock will be connected through Supabase.</p>
+    <button class="outline-button" onclick="toggleItinerary()">Toggle itinerary preview</button>
+    <p id="settingStatus" class="small">Currently locked</p>
+  </div>
+  <div class="item">
+    <h3>A note about this version</h3>
+    <p class="intro">Gifts, notes and settings are currently saved only in this browser. Separate accounts, shared storage and secure permissions will be added in the next stage.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Made with love, just for us. ☾<br><br>
+  <span class="small">Our Little World · 2026</span>
+</footer>
+
+<script>
+function showPage(id,button) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  button.classList.add('active');
+}
+
+function renderTimer(id,date) {
+  const target = new Date(date+'T00:00:00').getTime();
+  const now = Date.now();
+  const diff = target-now;
+  const el = document.getElementById(id);
+
+  if(diff<=0) {
+    el.innerHTML='<div style="grid-column:span 2;color:var(--gold)">The day is here! ♡</div>';
+    return;
+  }
+  const days=Math.floor(diff/86400000);
+  const hours=Math.floor(diff%86400000/3600000);
+  const mins=Math.floor(diff%3600000/60000);
+  const secs=Math.floor(diff%60000/1000);
+  el.innerHTML=[
+    [days,'Days'],[hours,'Hours'],[mins,'Mins'],[secs,'Secs']
+  ].map(([n,label])=>`<div><strong>${n}</strong>${label}</div>`).join('');
+}
+
+function updateTimers() {
+  renderTimer('birthdayTimer','2026-12-07');
+  renderTimer('surpriseTimer','2026-12-08');
+}
+updateTimers();
+setInterval(updateTimers,1000);
+
+function safe(text) {
+  return String(text).replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;',
+    '"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+
+let gifts=JSON.parse(localStorage.getItem('previewGifts')||'[]');
+let notes=JSON.parse(localStorage.getItem('previewNotes')||'[]');
+let itineraryUnlocked=false;
+
+function renderGifts() {
+  document.getElementById('giftList').innerHTML=gifts.map(g=>
+    `<div class="item"><h3>${safe(g.name)}</h3>
+    <p class="intro">${safe(g.description)}</p>
+    ${g.link?`<a style="color:var(--gold)" href="${safe(g.link)}" target="_blank" rel="noopener">View gift ↗</a>`:''}</div>`
+  ).join('') || '<p class="intro">Your gifts will appear here.</p>';
+}
+function addGift() {
+  const name=document.getElementById('giftName').value.trim();
+  if(!name)return alert('Add a gift name first.');
+  const link=document.getElementById('giftLink').value.trim();
+  if(link && !/^https?:\/\//i.test(link))return alert('Please use a full http or https link.');
+  gifts.push({
+    name,
+    link,
+    description:document.getElementById('giftDescription').value
+  });
+  localStorage.setItem('previewGifts',JSON.stringify(gifts));
+  document.getElementById('giftName').value='';
+  document.getElementById('giftLink').value='';
+  document.getElementById('giftDescription').value='';
+  renderGifts();
+}
+
+function renderNotes() {
+  document.getElementById('noteList').innerHTML=notes.slice().reverse().map(n=>
+    `<div class="item"><div class="small">${safe(n.author)} · ${safe(n.date)}</div>
+    <p>${safe(n.text).replace(/\n/g,'<br>')}</p></div>`
+  ).join('') || '<p class="intro">No notes yet. Your first one is waiting.</p>';
+}
+function addNote() {
+  const author=document.getElementById('noteAuthor').value.trim();
+  const text=document.getElementById('noteText').value.trim();
+  if(!author||!text)return alert('Please enter your name and note.');
+  notes.push({author,text,date:new Date().toLocaleString()});
+  localStorage.setItem('previewNotes',JSON.stringify(notes));
+  document.getElementById('noteText').value='';
+  renderNotes();
+}
+
+function toggleItinerary() {
+  itineraryUnlocked=!itineraryUnlocked;
+  document.getElementById('settingStatus').textContent=
+    itineraryUnlocked?'Preview unlocked':'Currently locked';
+  document.getElementById('itineraryContent').innerHTML=itineraryUnlocked
+    ?'<div class="lock-icon">🌊</div><h3>Your surprise awaits</h3><p class="intro">The celebration itinerary will be added here.</p>'
+    :'<div class="lock-icon">🔒</div><h3>Not just yet...</h3><p class="intro">This little surprise is still a secret.<br>Come back when the time is right.</p>';
+}
+
+renderGifts();
+renderNotes();
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Little World</title>
+<style>
+:root {
+  --bg:#101014;
+  --panel:#1b1a20;
+  --gold:#d9b875;
+  --white:#f7f2e9;
+  --muted:#aaa3a0;
+  --red:#a84b51;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:Georgia,serif;
+}
+button,input,textarea {font:inherit}
+button {cursor:pointer}
+header {
+  text-align:center;
+  padding:35px 18px 20px;
+}
+.eyebrow {
+  color:var(--gold);
+  letter-spacing:4px;
+  font:11px Arial,sans-serif;
+  text-transform:uppercase;
+}
+h1 {
+  font-size:38px;
+  font-weight:normal;
+  margin:15px 0 8px;
+}
+.subtitle {color:var(--muted);font-style:italic}
+nav {
+  display:flex;
+  overflow-x:auto;
+  gap:9px;
+  padding:15px;
+  justify-content:center;
+  border-bottom:1px solid #343039;
+}
+nav button {
+  white-space:nowrap;
+  background:transparent;
+  color:var(--muted);
+  border:1px solid #49434a;
+  padding:10px 14px;
+  border-radius:30px;
+  font:12px Arial;
+}
+nav button.active {
+  color:var(--gold);
+  border-color:var(--gold);
+}
+main {max-width:850px;margin:auto;padding:25px 18px 65px}
+.page {display:none}
+.page.active {display:block}
+.hero {
+  text-align:center;
+  padding:40px 15px;
+  background:linear-gradient(160deg,#28232a,#17191e 65%,#25222a);
+  border:1px solid #514537;
+  border-radius:18px;
+}
+.hero h2 {font-size:30px;font-weight:normal;margin:12px}
+.hero p {color:var(--muted);line-height:1.7}
+.countdowns {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+  margin-top:20px;
+}
+.card {
+  background:var(--panel);
+  border:1px solid #38343a;
+  border-radius:15px;
+  padding:20px 13px;
+}
+.countdown {text-align:center}
+.countdown h3 {color:var(--gold);font-weight:normal}
+.time {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:18px;
+}
+.time div {
+  background:#111116;
+  padding:12px 4px;
+  border-radius:9px;
+  font:11px Arial;
+  color:var(--muted);
+}
+.time strong {
+  display:block;
+  color:var(--white);
+  font:24px Georgia;
+  margin-bottom:5px;
+}
+h2.section-title {font-weight:normal;font-size:27px}
+.intro {color:var(--muted);line-height:1.7}
+.panel {margin-top:20px}
+.item {
+  background:var(--panel);
+  border:1px solid #39343a;
+  padding:18px;
+  border-radius:13px;
+  margin:12px 0;
+}
+.item h3 {color:var(--gold);font-weight:normal}
+.small {font:12px Arial;color:var(--muted)}
+input,textarea {
+  width:100%;
+  padding:13px;
+  border-radius:9px;
+  border:1px solid #49434a;
+  background:#111116;
+  color:white;
+  margin:8px 0 12px;
+}
+textarea {min-height:100px;resize:vertical}
+.gold-button {
+  background:var(--gold);
+  color:#171318;
+  border:0;
+  padding:12px 19px;
+  border-radius:25px;
+  font:13px Arial;
+}
+.outline-button {
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  padding:10px 16px;
+  border-radius:25px;
+}
+.locked {text-align:center;padding:35px 15px}
+.lock-icon {font-size:42px}
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:25px;
+  font-size:13px;
+}
+@media(max-width:500px) {
+  header {padding-top:27px}
+  h1 {font-size:32px}
+  nav {justify-content:flex-start}
+  .countdowns {grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">A little place of our own</div>
+  <h1>Our Little World ✦</h1>
+  <div class="subtitle">Two dates, countless memories.</div>
+</header>
+
+<nav>
+  <button class="active" onclick="showPage('home',this)">Home</button>
+  <button onclick="showPage('gifts',this)">Gifts</button>
+  <button onclick="showPage('notes',this)">Daily Notes</button>
+  <button onclick="showPage('itinerary',this)">Itinerary 🔒</button>
+  <button onclick="showPage('settings',this)">Settings</button>
+</nav>
+
+<main>
+
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="eyebrow">A celebration of you</div>
+    <h2>For my favourite human.</h2>
+    <p>A little corner of the internet filled with surprises,<br>
+    memories, messages and things made with love.</p>
+    <div style="color:var(--gold);font-size:25px">☾ ✧ ♡ ✧ ☽</div>
+  </div>
+
+  <div class="countdowns">
+    <div class="card countdown">
+      <div class="eyebrow">The actual birthday</div>
+      <h3>7 December 2026</h3>
+      <div class="small">The day you came into this world.</div>
+      <div class="time" id="birthdayTimer"></div>
+    </div>
+    <div class="card countdown">
+      <div class="eyebrow">A little surprise</div>
+      <h3>8 December 2026</h3>
+      <div class="small">The day I've been waiting to celebrate.</div>
+      <div class="time" id="surpriseTimer"></div>
+    </div>
+  </div>
+
+  <div class="item panel" style="text-align:center">
+    <h3>Some things are worth waiting for.</h3>
+    <p class="intro">Until then, there's a little world here for us to explore.</p>
+  </div>
+</section>
+
+<section id="gifts" class="page">
+  <div class="eyebrow">A little collection</div>
+  <h2 class="section-title">Birthday Gifts 🎁</h2>
+  <p class="intro">A few things I've picked out for you. More surprises will find their way here.</p>
+  <div id="giftList"></div>
+  <div class="item">
+    <h3>Add a gift (preview)</h3>
+    <input id="giftName" placeholder="Gift name">
+    <input id="giftLink" placeholder="Link (optional)">
+    <textarea id="giftDescription" placeholder="A little description..."></textarea>
+    <button class="gold-button" onclick="addGift()">Add gift</button>
+  </div>
+</section>
+
+<section id="notes" class="page">
+  <div class="eyebrow">Little words, lasting memories</div>
+  <h2 class="section-title">Our Daily Notes 💌</h2>
+  <p class="intro">A place for the things we want to tell each other, today and every day.</p>
+  <div class="item">
+    <h3>Leave a little note</h3>
+    <input id="noteAuthor" placeholder="Your name">
+    <textarea id="noteText" placeholder="Write something for each other..."></textarea>
+    <button class="gold-button" onclick="addNote()">Save note</button>
+  </div>
+  <h3 style="color:var(--gold);font-weight:normal">Our little archive</h3>
+  <div id="noteList"></div>
+</section>
+
+<section id="itinerary" class="page">
+  <div class="eyebrow">Something is waiting</div>
+  <h2 class="section-title">The Celebration ✨</h2>
+  <div id="itineraryContent" class="item locked">
+    <div class="lock-icon">🔒</div>
+    <h3>Not just yet...</h3>
+    <p class="intro">This little surprise is still a secret.<br>
+    Come back when the time is right.</p>
+  </div>
+</section>
+
+<section id="settings" class="page">
+  <div class="eyebrow">Behind the scenes</div>
+  <h2 class="section-title">Website Settings ⚙</h2>
+  <div class="item">
+    <h3>Itinerary preview control</h3>
+    <p class="intro">This is only a local design preview. The real admin-only lock will be connected through Supabase.</p>
+    <button class="outline-button" onclick="toggleItinerary()">Toggle itinerary preview</button>
+    <p id="settingStatus" class="small">Currently locked</p>
+  </div>
+  <div class="item">
+    <h3>A note about this version</h3>
+    <p class="intro">Gifts, notes and settings are currently saved only in this browser. Separate accounts, shared storage and secure permissions will be added in the next stage.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Made with love, just for us. ☾<br><br>
+  <span class="small">Our Little World · 2026</span>
+</footer>
+
+<script>
+function showPage(id,button) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  button.classList.add('active');
+}
+
+function renderTimer(id,date) {
+  const target = new Date(date+'T00:00:00').getTime();
+  const now = Date.now();
+  const diff = target-now;
+  const el = document.getElementById(id);
+
+  if(diff<=0) {
+    el.innerHTML='<div style="grid-column:span 2;color:var(--gold)">The day is here! ♡</div>';
+    return;
+  }
+  const days=Math.floor(diff/86400000);
+  const hours=Math.floor(diff%86400000/3600000);
+  const mins=Math.floor(diff%3600000/60000);
+  const secs=Math.floor(diff%60000/1000);
+  el.innerHTML=[
+    [days,'Days'],[hours,'Hours'],[mins,'Mins'],[secs,'Secs']
+  ].map(([n,label])=>`<div><strong>${n}</strong>${label}</div>`).join('');
+}
+
+function updateTimers() {
+  renderTimer('birthdayTimer','2026-12-07');
+  renderTimer('surpriseTimer','2026-12-08');
+}
+updateTimers();
+setInterval(updateTimers,1000);
+
+function safe(text) {
+  return String(text).replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;',
+    '"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+
+let gifts=JSON.parse(localStorage.getItem('previewGifts')||'[]');
+let notes=JSON.parse(localStorage.getItem('previewNotes')||'[]');
+let itineraryUnlocked=false;
+
+function renderGifts() {
+  document.getElementById('giftList').innerHTML=gifts.map(g=>
+    `<div class="item"><h3>${safe(g.name)}</h3>
+    <p class="intro">${safe(g.description)}</p>
+    ${g.link?`<a style="color:var(--gold)" href="${safe(g.link)}" target="_blank" rel="noopener">View gift ↗</a>`:''}</div>`
+  ).join('') || '<p class="intro">Your gifts will appear here.</p>';
+}
+function addGift() {
+  const name=document.getElementById('giftName').value.trim();
+  if(!name)return alert('Add a gift name first.');
+  const link=document.getElementById('giftLink').value.trim();
+  if(link && !/^https?:\/\//i.test(link))return alert('Please use a full http or https link.');
+  gifts.push({
+    name,
+    link,
+    description:document.getElementById('giftDescription').value
+  });
+  localStorage.setItem('previewGifts',JSON.stringify(gifts));
+  document.getElementById('giftName').value='';
+  document.getElementById('giftLink').value='';
+  document.getElementById('giftDescription').value='';
+  renderGifts();
+}
+
+function renderNotes() {
+  document.getElementById('noteList').innerHTML=notes.slice().reverse().map(n=>
+    `<div class="item"><div class="small">${safe(n.author)} · ${safe(n.date)}</div>
+    <p>${safe(n.text).replace(/\n/g,'<br>')}</p></div>`
+  ).join('') || '<p class="intro">No notes yet. Your first one is waiting.</p>';
+}
+function addNote() {
+  const author=document.getElementById('noteAuthor').value.trim();
+  const text=document.getElementById('noteText').value.trim();
+  if(!author||!text)return alert('Please enter your name and note.');
+  notes.push({author,text,date:new Date().toLocaleString()});
+  localStorage.setItem('previewNotes',JSON.stringify(notes));
+  document.getElementById('noteText').value='';
+  renderNotes();
+}
+
+function toggleItinerary() {
+  itineraryUnlocked=!itineraryUnlocked;
+  document.getElementById('settingStatus').textContent=
+    itineraryUnlocked?'Preview unlocked':'Currently locked';
+  document.getElementById('itineraryContent').innerHTML=itineraryUnlocked
+    ?'<div class="lock-icon">🌊</div><h3>Your surprise awaits</h3><p class="intro">The celebration itinerary will be added here.</p>'
+    :'<div class="lock-icon">🔒</div><h3>Not just yet...</h3><p class="intro">This little surprise is still a secret.<br>Come back when the time is right.</p>';
+}
+
+renderGifts();
+renderNotes();
+</script>
+</body>
+</html>
